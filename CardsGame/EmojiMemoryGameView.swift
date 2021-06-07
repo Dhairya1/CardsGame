@@ -33,17 +33,11 @@ struct CardView: View {
     var body: some View {
         GeometryReader(content: { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
-                if card.isFaceUp {
-                    shape.fill().foregroundColor(.white)
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
-                    Text(card.content).font(font(in: geometry.size))
-                } else if card.isMatched {
-                    shape.opacity(0)
-                } else {
-                    shape.fill()
-                }
+                
+                Pie(startAngle: Angle(degrees: 0-90), endAngle: Angle(degrees: 110-90)).padding(5).opacity(0.5)
+                Text(card.content).font(font(in: geometry.size))
             }
+            .cardify(isFaceUp: card.isFaceUp)
         })
     }
     private func font(in size: CGSize) -> Font {
@@ -58,12 +52,8 @@ struct CardView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            let game = EmojiMemoryGame()
-            EmojiMemoryGameView(game: game)
-                .preferredColorScheme(.dark)
-            EmojiMemoryGameView(game: game)
-                .preferredColorScheme(.light)
-        }
+        let game = EmojiMemoryGame()
+//        game.choose(game.cards.first!)
+        return EmojiMemoryGameView(game: game)
     }
 }
